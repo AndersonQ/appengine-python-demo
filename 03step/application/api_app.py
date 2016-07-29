@@ -4,8 +4,7 @@ import random
 import names
 from flask import jsonify, make_response, request
 from google.appengine.api import app_identity
-from google.appengine.ext.ndb import Key, AND
-from logging import info as linfo
+from google.appengine.ext.ndb import Key
 
 from application import app
 from models import *
@@ -89,24 +88,3 @@ def create_incident():
 
     return _make_rest_response(dic, incident.key.id())
 
-
-@app.route('/api/user', methods=['GET'])
-def find_incident():
-    names = request.args.getlist('name')
-
-    linfo(names)
-    if names:
-        q = User.query(User.name.IN(names))
-
-        users = ''
-        linfo(str(q.count()))
-        for e in q:
-            linfo(str(e))
-            users += str(e) + '<br><br>'
-            # e.key.delete()
-
-        return '<HTML><HEAD></HEAD><BODY>%s</BODY></HTML' % users
-
-    resp = make_response('')
-    resp.status_code = 204
-    return resp

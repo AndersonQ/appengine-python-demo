@@ -1,0 +1,5 @@
+.datastore
+.idea/
+*.pyc.pyc
+
+lib/

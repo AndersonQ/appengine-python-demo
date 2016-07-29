@@ -5,7 +5,6 @@ import names
 from flask import jsonify, make_response, request
 from google.appengine.api import app_identity
 from google.appengine.ext.ndb import Key, AND
-from logging import info as linfo
 
 from application import app
 from models import *
@@ -89,6 +88,22 @@ def create_incident():
 
     return _make_rest_response(dic, incident.key.id())
 
+
+@app.route('/api/incident', methods=['GET'])
+def find_incident():
+    lat = request.args.get('lat', None)
+    lng = request.args.get('lng', None)
+
+    if lat and lng:
+        q = Location.query(AND(Location.lat > 'lat',
+                               Location.lng > 'lng'))
+
+        locs = ''
+        for e in q:
+            locs += str(e) + '<br><br>'
+            # e.key.delete()
+
+        return '<HTML><HEAD></HEAD><BODY>%s</BODY></HTML' % str(locs)
 
 @app.route('/api/user', methods=['GET'])
 def find_incident():
